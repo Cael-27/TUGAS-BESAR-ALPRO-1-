@@ -138,17 +138,22 @@ begin
     Determinan2x2 := a11 * a22 - a12 * a21;
 end;
 
-function DeterminantRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real): real;
+function DeterminantRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real): real; //  jika memilih operasi determinan matriks maka function ini akan jalan untuk matriks 3x3.
+
+// Fungsi untuk menghitung determinan matriks 2x2
+function Determinant2x2(b11, b12, b21, b22: real): real;
+begin
+    Determinant2x2 := b11 * b22 - b12 * b21;
+end;
 
 begin
 
-    DeterminantRecursive3x3 := a11 * (a22 * a33 - a23 * a32) -
-
-              a12 * (a21 * a33 - a23 * a31) +
-
-              a13 * (a21 * a32 - a22 * a31);
-
+    DeterminantRecursive3x3 := 
+        a11 * Determinant2x2(a22, a23, a32, a33) -
+        a12 * Determinant2x2(a21, a23, a31, a33) +
+        a13 * Determinant2x2(a21, a22, a31, a32); // menghitung determinan dengan "pendekatan fungsi rekursif"
 end;
+
 
 procedure InversMatriks2x2(a11, a12, a21, a22: real; var c11, c12, c21, c22: real; var inversornot: boolean); // jika memilih operasi invers matriks maka prosedur ini akan jalan untuk matriks 2x2.
 var
