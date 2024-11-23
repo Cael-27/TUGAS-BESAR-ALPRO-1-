@@ -264,4 +264,44 @@ begin
                    Simpanmatriks2x2(f, c11, c12, c21, c22);
                end;
            end
+else
+           begin
+               InversMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33,
+                                 c11, c12, c13, c21, c22, c23, c31, c32, c33, inversornot);
+               if not inversornot then
+                   writeln(f, 'Matriks A tidak memiliki invers karena determinan = 0.')
+               else
+               begin
+                   writeln(f, 'Invers Matriks A:');
+                   Simpanmatriks3x3(f, c11, c12, c13, c21, c22, c23, c31, c32, c33);
+               end;
+           end;
+    end;
+
+    close(f);
+    writeln('Hasil operasi telah disimpan dalam file HasilOperasiMatriks.txt');
+end;
+
+begin
+    clrscr;
+    PilihMatriks(ukuran);
+    if ukuran = 1 then
+    begin
+        writeln('Input Matriks A:');
+        InputMatriks2x2(a11, a12, a21, a22);
+        writeln('Input Matriks B:');
+        InputMatriks2x2(b11, b12, b21, b22);
+    end
+    else
+    begin
+        writeln('Input Matriks A:');
+        InputMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
+        writeln('Input Matriks B:');
+        InputMatriks3x3(b11, b12, b13, b21, b22, b23, b31, b32, b33);
+    end;
+
+    PilihOperasi(pilihan);
+    ProsesOperasiMatriks;
+    readln;
+end.
     
