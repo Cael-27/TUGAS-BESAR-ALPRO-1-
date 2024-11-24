@@ -180,7 +180,7 @@ procedure InversMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real; //
 var
     det: real;
 begin
-    det := Determinanrecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
+    det := DeterminanRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
     if det = 0 then // digunakan tipe data boolean untuk memeriksa apakah det= 0 jika iya maka false/ tidak bisa operasi invers
     begin
         inversornot := false;
@@ -249,7 +249,7 @@ begin
            end
            else
            begin
-               det := Determinan3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
+               det := DeterminanRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
                writeln(f, 'Determinan Matriks A: ', det:0:2);
            end;
 
