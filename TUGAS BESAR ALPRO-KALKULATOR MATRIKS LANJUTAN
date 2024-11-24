@@ -263,7 +263,7 @@ begin
                    writeln(f, 'Invers Matriks A:');
                    Simpanmatriks2x2(f, c11, c12, c21, c22);
                end;
-           end
+            end
 else
            begin
                InversMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33,
