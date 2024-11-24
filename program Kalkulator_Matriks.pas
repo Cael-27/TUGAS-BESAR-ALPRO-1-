@@ -1,0 +1,306 @@
+program Kalkulator_Matriks;
+
+uses crt;
+
+var
+    a11, a12, a13: real;        // Elemen-elemen matriks A 
+    a21, a22, a23: real;        // Elemen-elemen matriks A 
+    a31, a32, a33: real;        // Elemen-elemen matriks A 
+    b11, b12, b13: real;        // Elemen-elemen matriks B
+    b21, b22, b23: real;        // Elemen-elemen matriks B 
+    b31, b32, b33: real;        // Elemen-elemen matriks B 
+    c11, c12, c13: real;        // Elemen-elemen hasil matriks 
+    c21, c22, c23: real;        // Elemen-elemen hasil matriks 
+    c31, c32, c33: real;        // Elemen-elemen hasil matriks 
+    det: real;                  // Determinan matriks
+    inversornot: boolean;        // Memeriksa apakah matriks memiliki invers
+    f: text;                    // File untuk menyimpan hasil
+    ukuran, pilihan: integer;   // Variabel untuk pilihan ukuran dan operasi
+
+procedure PilihMatriks(var ukuran: integer); // prosedur untuk memilih ukuran matriks apa 2x2 atau 3x3.
+begin
+    repeat
+    writeln('Pilih ukuran matriks:');
+    writeln('1. Matriks 2x2');
+    writeln('2. Matriks 3x3');
+    write('Masukkan pilihan (1 atau 2): '); readln(ukuran);
+    if (ukuran <> 1) and (ukuran <> 2) then // jika ukuran yang dipilih bukan 1 atau 2 maka pilihannya tidak valid
+    begin
+        writeln('Pilihan tidak valid. Coba lagi!');
+    end;
+    until (ukuran = 1) or (ukuran = 2);
+end;
+
+procedure PilihOperasi(var pilihan: integer); // setelah memilih ukuran dilanjutkan memilih operasi matriks apa.
+begin
+    repeat 
+    writeln('Pilih operasi matriks:');
+    writeln('1. Penjumlahan Matriks');
+    writeln('2. Perkalian Matriks');
+    writeln('3. Determinan Matriks');
+    writeln('4. Invers Matriks');
+    write('Masukkan pilihan (1-4): '); readln(pilihan);
+    if (pilihan < 1) or (pilihan > 4) then // jika pilihannya tidak sesuai 1-4 maka pilihan tidak valid.
+    begin
+        writeln('Pilihan tidak valid. Coba lagi!!');
+    end;
+    until (pilihan = 1) or (pilihan = 2) or (pilihan = 3 ) or(pilihan = 4);
+end;
+
+procedure InputMatriks2x2(var m11, m12, m21, m22: real); // jika memilih matriks 2x2 maka akan melakukan prosedur ini. yaitu untuk menginputkan angka pada matriks 2x2 tersebut.
+begin
+    write('Masukkan elemen [1,1]: '); readln(m11);
+    write('Masukkan elemen [1,2]: '); readln(m12);
+    write('Masukkan elemen [2,1]: '); readln(m21);
+    write('Masukkan elemen [2,2]: '); readln(m22);
+end;
+
+procedure InputMatriks3x3(var m11, m12, m13, m21, m22, m23, m31, m32, m33: real); // jika memilih matriks 3x3 maka akan melakukan prosedur ini. yaitu untuk menginputkan angka pada matriks 3x3 tersebut.
+begin
+    write('Masukkan elemen [1,1]: '); readln(m11);
+    write('Masukkan elemen [1,2]: '); readln(m12);
+    write('Masukkan elemen [1,3]: '); readln(m13);
+    write('Masukkan elemen [2,1]: '); readln(m21);
+    write('Masukkan elemen [2,2]: '); readln(m22);
+    write('Masukkan elemen [2,3]: '); readln(m23);
+    write('Masukkan elemen [3,1]: '); readln(m31);
+    write('Masukkan elemen [3,2]: '); readln(m32);
+    write('Masukkan elemen [3,3]: '); readln(m33);
+end;
+
+procedure Simpanmatriks2x2(var f: text; m11, m12, m21, m22: real); // menyimpan inputan matriks 2x2 tadi ke file.
+begin
+    writeln(f, m11:0:2, ' ', m12:0:2);
+    writeln(f, m21:0:2, ' ', m22:0:2);
+end;
+
+procedure Simpanmatriks3x3(var f: text; m11, m12, m13, m21, m22, m23, m31, m32, m33: real); // menyimpan inputan matriks 3x3 ke file.
+begin
+    writeln(f, m11:0:2, ' ', m12:0:2, ' ', m13:0:2);
+    writeln(f, m21:0:2, ' ', m22:0:2, ' ', m23:0:2);
+    writeln(f, m31:0:2, ' ', m32:0:2, ' ', m33:0:2);
+end;
+
+procedure PenjumlahanMatriks2x2(a11, a12, a21, a22: real;  // jika memilih operasi penjumlahan matriks maka prosedur ini akan jalan untuk matriks 2x2.
+                                 b11, b12, b21, b22: real;
+                                 var c11, c12, c21, c22: real);
+begin
+    c11 := a11 + b11;
+    c12 := a12 + b12;
+    c21 := a21 + b21;
+    c22 := a22 + b22;
+end;
+
+procedure PenjumlahanMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real;  // jika memilih operasi penjumlahan matriks maka prosedur ini akan jalan untuk matriks 3x3.
+                                 b11, b12, b13, b21, b22, b23, b31, b32, b33: real;
+                                 var c11, c12, c13, c21, c22, c23, c31, c32, c33: real);
+begin
+    c11 := a11 + b11;
+    c12 := a12 + b12;
+    c13 := a13 + b13;
+    c21 := a21 + b21;
+    c22 := a22 + b22;
+    c23 := a23 + b23;
+    c31 := a31 + b31;
+    c32 := a32 + b32;
+    c33 := a33 + b33;
+end;
+
+procedure PerkalianMatriks2x2(a11, a12, a21, a22: real;  // jika memilih operasi perkalian matriks maka prosedur ini akan jalan untuk matriks 2x2.
+                               b11, b12, b21, b22: real;
+                               var c11, c12, c21, c22: real);
+begin
+    c11 := a11 * b11 + a12 * b21;
+    c12 := a11 * b12 + a12 * b22;
+    c21 := a21 * b11 + a22 * b21;
+    c22 := a21 * b12 + a22 * b22;
+end;
+
+procedure PerkalianMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real;  // jika memilih operasi perkalian matriks maka prosedur ini akan jalan untuk matriks 3x3.
+                               b11, b12, b13, b21, b22, b23, b31, b32, b33: real;
+                               var c11, c12, c13, c21, c22, c23, c31, c32, c33: real);
+begin
+    c11 := a11 * b11 + a12 * b21 + a13 * b31;
+    c12 := a11 * b12 + a12 * b22 + a13 * b32;
+    c13 := a11 * b13 + a12 * b23 + a13 * b33;
+
+    c21 := a21 * b11 + a22 * b21 + a23 * b31;
+    c22 := a21 * b12 + a22 * b22 + a23 * b32;
+    c23 := a21 * b13 + a22 * b23 + a23 * b33;
+
+    c31 := a31 * b11 + a32 * b21 + a33 * b31;
+    c32 := a31 * b12 + a32 * b22 + a33 * b32;
+    c33 := a31 * b13 + a32 * b23 + a33 * b33;
+end;
+
+function Determinan2x2(a11, a12, a21, a22: real): real;  // jika memilih operasi determinan matriks maka function ini akan jalan untuk matriks 2x2.
+begin
+    Determinan2x2 := a11 * a22 - a12 * a21;
+end;
+
+function DeterminantRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real): real;
+
+// Fungsi untuk menghitung determinan matriks 2x2
+function Determinant2x2(b11, b12, b21, b22: real): real;
+begin
+    Determinant2x2 := b11 * b22 - b12 * b21;
+end;
+
+begin
+    // Mengembangkan kofaktor pada baris pertama
+    DeterminantRecursive3x3 := 
+        a11 * Determinant2x2(a22, a23, a32, a33) -
+        a12 * Determinant2x2(a21, a23, a31, a33) +
+        a13 * Determinant2x2(a21, a22, a31, a32); // menghitung determinan dengan "pendekatan fungsi rekursif"
+end;
+
+
+procedure InversMatriks2x2(a11, a12, a21, a22: real; var c11, c12, c21, c22: real; var inversornot: boolean); // jika memilih operasi invers matriks maka prosedur ini akan jalan untuk matriks 2x2.
+var
+    det: real;
+begin
+    det := Determinan2x2(a11, a12, a21, a22);
+    if det = 0 then
+    begin
+        inversornot := false; // digunakan tipe data boolean untuk memeriksa apakah det= 0 jika iya maka false/ tidak bisa operasi invers
+        exit;
+    end;
+
+    c11 := a22 / det;
+    c21 := -a21 / det;
+    c12 := -a12 / det;
+    c22 := a11 / det;
+
+    inversornot := true; 
+end;
+
+procedure InversMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real; // jika memilih operasi invers matriks maka prosedur ini akan jalan untuk matriks 3x3
+                            var c11, c12, c13, c21, c22, c23, c31, c32, c33: real;
+                            var inversornot: boolean);
+var
+    det: real;
+begin
+    det := DeterminantRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
+    if det = 0 then // digunakan tipe data boolean untuk memeriksa apakah det= 0 jika iya maka false/ tidak bisa operasi invers
+    begin
+        inversornot := false;
+        exit;
+    end;
+
+    c11 := (a22 * a33 - a23 * a32) / det;
+    c12 := (a13 * a32 - a12 * a33) / det;
+    c13 := (a12 * a23 - a13 * a22) / det;
+
+    c21 := (a23 * a31 - a21 * a33) / det;
+    c22 := (a11 * a33 - a13 * a31) / det;
+    c23 := (a13 * a21 - a11 * a23) / det;
+
+    c31 := (a21 * a32 - a22 * a31) / det;
+    c32 := (a12 * a31 - a11 * a32) / det;
+    c33 := (a11 * a22 - a12 * a21) / det;
+
+    inversornot := true;
+end;
+
+procedure ProsesOperasiMatriks; // proses untuk melakukan operasi matriks.
+var
+    c2x2: real;
+    c3x3: real;
+begin
+    assign(f, 'HasilOperasiMatriks.txt'); // assign file dengan nama 'hasiloperasimatriks.txt'
+    rewrite(f); //membuat file karena file belum ada.
+
+    { Melakukan operasi berdasarkan pilihan }
+    case pilihan of
+        1: if ukuran = 1 then 
+           begin
+               PenjumlahanMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22, c11, c12, c21, c22);
+               writeln(f, 'Hasil Penjumlahan Matriks A + B:');
+               Simpanmatriks2x2(f, c11, c12, c21, c22);
+           end
+           else
+           begin
+               PenjumlahanMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33,
+                                     b11, b12, b13, b21, b22, b23, b31, b32, b33,
+                                     c11, c12, c13, c21, c22, c23, c31, c32, c33);
+               writeln(f, 'Hasil Penjumlahan Matriks A + B:');
+               Simpanmatriks3x3(f, c11, c12, c13, c21, c22, c23, c31, c32, c33);
+           end;
+
+        2: if ukuran = 1 then
+           begin
+               PerkalianMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22, c11, c12, c21, c22);
+               writeln(f, 'Hasil Perkalian Matriks A * B:');
+               Simpanmatriks2x2(f, c11, c12, c21, c22);
+           end
+           else
+           begin
+               PerkalianMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33,
+                                   b11, b12, b13, b21, b22, b23, b31, b32, b33,
+                                   c11, c12, c13, c21, c22, c23, c31, c32, c33);
+               writeln(f, 'Hasil Perkalian Matriks A * B:');
+               Simpanmatriks3x3(f, c11, c12, c13, c21, c22, c23, c31, c32, c33);
+           end;
+
+        3: if ukuran = 1 then
+           begin
+               det := Determinan2x2(a11, a12, a21, a22);
+               writeln(f, 'Determinan Matriks A: ', det:0:2);
+           end
+           else
+           begin
+               det := DeterminantRecursive3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
+               writeln(f, 'Determinan Matriks A: ', det:0:2);
+           end;
+
+        4: if ukuran = 1 then
+           begin
+               InversMatriks2x2(a11, a12, a21, a22, c11, c12, c21, c22, inversornot);
+               if not inversornot then
+                   writeln(f, 'Matriks A tidak memiliki invers karena determinan = 0.')
+               else
+               begin
+                   writeln(f, 'Invers Matriks A:');
+                   Simpanmatriks2x2(f, c11, c12, c21, c22);
+               end;
+           end
+           else
+           begin
+               InversMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33,
+                                 c11, c12, c13, c21, c22, c23, c31, c32, c33, inversornot);
+               if not inversornot then
+                   writeln(f, 'Matriks A tidak memiliki invers karena determinan = 0.')
+               else
+               begin
+                   writeln(f, 'Invers Matriks A:');
+                   Simpanmatriks3x3(f, c11, c12, c13, c21, c22, c23, c31, c32, c33);
+               end;
+           end;
+    end;
+
+    close(f);
+    writeln('Hasil operasi telah disimpan dalam file HasilOperasiMatriks.txt');
+end;
+
+begin
+    clrscr;
+    PilihMatriks(ukuran);
+    if ukuran = 1 then
+    begin
+        writeln('Input Matriks A:');
+        InputMatriks2x2(a11, a12, a21, a22);
+        writeln('Input Matriks B:');
+        InputMatriks2x2(b11, b12, b21, b22);
+    end
+    else
+    begin
+        writeln('Input Matriks A:');
+        InputMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
+        writeln('Input Matriks B:');
+        InputMatriks3x3(b11, b12, b13, b21, b22, b23, b31, b32, b33);
+    end;
+
+    PilihOperasi(pilihan);
+    ProsesOperasiMatriks;
+    readln;
+end.
