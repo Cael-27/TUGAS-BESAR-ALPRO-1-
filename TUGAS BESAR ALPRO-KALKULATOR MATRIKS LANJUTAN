@@ -16,6 +16,7 @@ var
     inversornot: boolean;        // Memeriksa apakah matriks memiliki invers
     f: text;                    // File untuk menyimpan hasil
     ukuran, pilihan: integer;   // Variabel untuk pilihan ukuran dan operasi
+    row,col:integer;
 
 procedure PilihMatriks(var ukuran: integer); // prosedur untuk memilih ukuran matriks apa 2x2 atau 3x3.
 begin
@@ -82,14 +83,27 @@ begin
     writeln(f, m31:0:2, ' ', m32:0:2, ' ', m33:0:2);
 end;
 
-procedure PenjumlahanMatriks2x2(a11, a12, a21, a22: real;  // jika memilih operasi penjumlahan matriks maka prosedur ini akan jalan untuk matriks 2x2.
-                                 b11, b12, b21, b22: real;
-                                 var c11, c12, c21, c22: real);
+procedure PenjumlahanMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22: real; 
+                                  var c11, c12, c21, c22: real; row, col: integer);
 begin
-    c11 := a11 + b11;
-    c12 := a12 + b12;
-    c21 := a21 + b21;
-    c22 := a22 + b22;
+    if row > 2 then
+        exit; // Basis rekursi: jika semua baris selesai
+
+    // Penjumlahan elemen berdasarkan posisi baris dan kolom
+    if (row = 1) and (col = 1) then
+        c11 := a11 + b11
+    else if (row = 1) and (col = 2) then
+        c12 := a12 + b12
+    else if (row = 2) and (col = 1) then
+        c21 := a21 + b21
+    else if (row = 2) and (col = 2) then
+        c22 := a22 + b22;
+
+    // Rekursi untuk kolom berikutnya
+    if col < 2 then
+        PenjumlahanMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22, c11, c12, c21, c22, row, col + 1)
+    else
+        PenjumlahanMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22, c11, c12, c21, c22, row + 1, 1);
 end;
 
 procedure PenjumlahanMatriks3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33: real;  // jika memilih operasi penjumlahan matriks maka prosedur ini akan jalan untuk matriks 3x3.
@@ -214,7 +228,7 @@ begin
     case pilihan of
         1: if ukuran = 1 then 
            begin
-               PenjumlahanMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22, c11, c12, c21, c22);
+               PenjumlahanMatriks2x2(a11, a12, a21, a22, b11, b12, b21, b22, c11, c12, c21, c22,row,col);
                writeln(f, 'Hasil Penjumlahan Matriks A + B:');
                Simpanmatriks2x2(f, c11, c12, c21, c22);
            end
